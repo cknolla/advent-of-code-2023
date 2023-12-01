@@ -6,7 +6,7 @@ import (
 )
 
 func GetInputLines() (channel chan string) {
-	channel = make(chan string)
+	channel = make(chan string, 1)
 	buffer := ""
 	go func() {
 		file, err := os.Open("input.txt")
