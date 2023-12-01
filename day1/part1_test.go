@@ -1,11 +1,13 @@
-package main
+package day1
 
 import (
+	"bufio"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
-func TestGetCalibrationValue(t *testing.T) {
+func TestGetPart1CalibrationValue(t *testing.T) {
 	testCases := []struct {
 		description   string
 		inputLine     string
@@ -34,7 +36,17 @@ func TestGetCalibrationValue(t *testing.T) {
 	}
 	for _, testCase := range testCases {
 		t.Run(testCase.description, func(t *testing.T) {
-			assert.Equal(t, testCase.expectedValue, getCalibrationValue(testCase.inputLine))
+			assert.Equal(t, testCase.expectedValue, getPart1CalibrationValue(testCase.inputLine))
 		})
 	}
+}
+
+func TestPart1(t *testing.T) {
+	file, err := os.Open("part1.txt")
+	assert.Nil(t, err)
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	answer, err := Part1(scanner)
+	assert.Nil(t, err)
+	assert.Equal(t, "54634", answer)
 }

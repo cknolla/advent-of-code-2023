@@ -1,14 +1,14 @@
-package main
+package day1
 
 import (
 	"bufio"
+	"fmt"
 	"log"
-	"os"
 	"regexp"
 	"strconv"
 )
 
-func getCalibrationValue(inputLine string) int {
+func getPart1CalibrationValue(inputLine string) int {
 	re := regexp.MustCompile("[0-9]")
 	numbers := re.FindAllString(inputLine, -1)
 	calibrationValue, err := strconv.Atoi(numbers[0] + numbers[len(numbers)-1])
@@ -18,11 +18,10 @@ func getCalibrationValue(inputLine string) int {
 	return calibrationValue
 }
 
-func main() {
-	scanner := bufio.NewScanner(os.Stdin)
+func Part1(scanner *bufio.Scanner) (string, error) {
 	sum := 0
 	for scanner.Scan() {
-		sum += getCalibrationValue(scanner.Text())
+		sum += getPart1CalibrationValue(scanner.Text())
 	}
-	log.Println(sum)
+	return fmt.Sprintf("%d", sum), nil
 }
