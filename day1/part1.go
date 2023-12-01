@@ -1,7 +1,7 @@
 package day1
 
 import (
-	"bufio"
+	"advent-of-code-2023/utils"
 	"fmt"
 	"log"
 	"regexp"
@@ -18,10 +18,11 @@ func getPart1CalibrationValue(inputLine string) int {
 	return calibrationValue
 }
 
-func Part1(scanner *bufio.Scanner) (string, error) {
+func Part1() (string, error) {
+	lines := utils.GetFileLines("part1.txt")
 	sum := 0
-	for scanner.Scan() {
-		sum += getPart1CalibrationValue(scanner.Text())
+	for _, line := range lines {
+		sum += getPart1CalibrationValue(line)
 	}
 	return fmt.Sprintf("%d", sum), nil
 }

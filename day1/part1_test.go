@@ -1,9 +1,7 @@
 package day1
 
 import (
-	"bufio"
 	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
 )
 
@@ -42,11 +40,7 @@ func TestGetPart1CalibrationValue(t *testing.T) {
 }
 
 func TestPart1(t *testing.T) {
-	file, err := os.Open("part1.txt")
-	assert.Nil(t, err)
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	answer, err := Part1(scanner)
+	answer, err := Part1()
 	assert.Nil(t, err)
 	assert.Equal(t, "54634", answer)
 }
