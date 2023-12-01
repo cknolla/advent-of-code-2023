@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func GetFileLines(path string) []string {
-	file, err := os.Open(path)
+func GetInputLines() []string {
+	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatalln(err)
 	}

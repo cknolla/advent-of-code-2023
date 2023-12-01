@@ -45,7 +45,7 @@ LINE:
 }
 
 func Part2() (string, error) {
-	lines := utils.GetFileLines("part2.txt")
+	lines := utils.GetInputLines()
 	sum := 0
 	for _, line := range lines {
 		sum += getPart2CalibrationValue(line)
