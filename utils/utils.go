@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
+// GetInputLines returns 1 line at a time when looped over
 func GetInputLines() (channel chan string) {
 	channel = make(chan string, 1)
-	buffer := ""
 	go func() {
 		file, err := os.Open("input.txt")
 		if err != nil {
@@ -18,9 +18,7 @@ func GetInputLines() (channel chan string) {
 		scanner := bufio.NewScanner(file)
 		for {
 			if scanner.Scan() {
-				buffer = scanner.Text()
-				channel <- buffer
-				buffer = ""
+				channel <- scanner.Text()
 			} else {
 				close(channel)
 				return
