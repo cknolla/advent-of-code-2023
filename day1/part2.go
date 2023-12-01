@@ -24,6 +24,7 @@ var strMap = map[string]string{
 
 func getPart2CalibrationValue(inputLine string) int {
 	var numbers []string
+LINE:
 	for index, char := range inputLine {
 		if unicode.IsNumber(char) {
 			numbers = append(numbers, string(char))
@@ -32,7 +33,7 @@ func getPart2CalibrationValue(inputLine string) int {
 		for str, num := range strMap {
 			if strings.HasPrefix(inputLine[index:], str) {
 				numbers = append(numbers, num)
-				continue
+				continue LINE
 			}
 		}
 	}
