@@ -6,8 +6,7 @@ import (
 )
 
 func (g *game) getPower() int {
-	roundMax := g.roundMaximum()
-	return roundMax.red * roundMax.green * roundMax.blue
+	return g.maxRound.red * g.maxRound.green * g.maxRound.blue
 }
 
 func Part2() (string, error) {

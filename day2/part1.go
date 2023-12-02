@@ -4,7 +4,6 @@ import (
 	"advent-of-code-2023/utils"
 	"fmt"
 	"log"
-	"math"
 	"strconv"
 	"strings"
 )
@@ -24,25 +23,28 @@ func NewRound() round {
 }
 
 type game struct {
-	id     int
-	rounds []round
+	id       int
+	rounds   []round
+	maxRound round
 }
 
 func parseGame(line string) game {
 	var err error
 	g := game{}
 	majorParts := strings.Split(line, ":")
-	gameParts := strings.Split(majorParts[0], " ")
+	gameParts := strings.Fields(majorParts[0])
 	g.id, err = strconv.Atoi(gameParts[1])
 	if err != nil {
 		log.Fatalln(err)
 	}
 	roundParts := strings.Split(majorParts[1], ";")
-	for _, roundPart := range roundParts {
+	g.rounds = make([]round, len(roundParts))
+	g.maxRound = NewRound()
+	for index, roundPart := range roundParts {
 		r := NewRound()
 		cubes := strings.Split(roundPart, ",")
 		for _, cube := range cubes {
-			cubeParts := strings.Split(strings.Trim(cube, " "), " ")
+			cubeParts := strings.Fields(cube)
 			value, err := strconv.Atoi(cubeParts[0])
 			if err != nil {
 				log.Fatalln(err)
@@ -50,34 +52,28 @@ func parseGame(line string) game {
 			switch cubeParts[1] {
 			case "red":
 				r.red = value
+				if r.red > g.maxRound.red {
+					g.maxRound.red = r.red
+				}
 			case "green":
 				r.green = value
+				if r.green > g.maxRound.green {
+					g.maxRound.green = r.green
+				}
 			case "blue":
 				r.blue = value
+				if r.blue > g.maxRound.blue {
+					g.maxRound.blue = r.blue
+				}
 			}
 		}
-		g.rounds = append(g.rounds, r)
+		g.rounds[index] = r
 	}
 	return g
 }
 
-func (g *game) roundMaximum() round {
-	maxCubes := round{
-		red:   0,
-		green: 0,
-		blue:  0,
-	}
-	for _, r := range g.rounds {
-		maxCubes.red = int(math.Max(float64(maxCubes.red), float64(r.red)))
-		maxCubes.green = int(math.Max(float64(maxCubes.green), float64(r.green)))
-		maxCubes.blue = int(math.Max(float64(maxCubes.blue), float64(r.blue)))
-	}
-	return maxCubes
-}
-
 func (g *game) isPossible(limit *round) bool {
-	roundMax := g.roundMaximum()
-	return limit.red >= roundMax.red && limit.green >= roundMax.green && limit.blue >= roundMax.blue
+	return limit.red >= g.maxRound.red && limit.green >= g.maxRound.green && limit.blue >= g.maxRound.blue
 }
 
 func Part1() (string, error) {
