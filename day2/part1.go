@@ -14,7 +14,7 @@ type round struct {
 	blue  int
 }
 
-func NewRound() round {
+func newRound() round {
 	return round{
 		red:   0,
 		green: 0,
@@ -39,9 +39,9 @@ func parseGame(line string) game {
 	}
 	roundParts := strings.Split(majorParts[1], ";")
 	g.rounds = make([]round, len(roundParts))
-	g.maxRound = NewRound()
+	g.maxRound = newRound()
 	for index, roundPart := range roundParts {
-		r := NewRound()
+		r := newRound()
 		cubes := strings.Split(roundPart, ",")
 		for _, cube := range cubes {
 			cubeParts := strings.Fields(cube)
