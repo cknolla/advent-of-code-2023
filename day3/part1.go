@@ -49,6 +49,15 @@ func (s *schematic) validatePartNumbers() int {
 	return validSum
 }
 
+func (p *partNumber) isValid(symbolLocations []int) bool {
+	for _, loc := range symbolLocations {
+		if p.startLocation-1 <= loc && p.endLocation+1 >= loc {
+			return true
+		}
+	}
+	return false
+}
+
 func parseSchematic(line string) schematic {
 	s := schematic{}
 	numStr := ""
@@ -69,15 +78,6 @@ func parseSchematic(line string) schematic {
 		s.addPartNumber(len(line), numStr)
 	}
 	return s
-}
-
-func (p *partNumber) isValid(symbolLocations []int) bool {
-	for _, loc := range symbolLocations {
-		if p.startLocation-1 <= loc && p.endLocation+1 >= loc {
-			return true
-		}
-	}
-	return false
 }
 
 func Part1() (string, error) {
