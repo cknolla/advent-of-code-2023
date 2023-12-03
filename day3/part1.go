@@ -22,15 +22,6 @@ type partNumber struct {
 	endLocation   int
 }
 
-func (p *partNumber) isValid(symbolLocations []int) bool {
-	for _, loc := range symbolLocations {
-		if p.startLocation-1 <= loc && p.endLocation+1 >= loc {
-			return true
-		}
-	}
-	return false
-}
-
 func (s *schematic) addPartNumber(index int, numStr string) {
 	num, _ := strconv.Atoi(numStr)
 	s.partNumbers = append(s.partNumbers, partNumber{
@@ -40,7 +31,8 @@ func (s *schematic) addPartNumber(index int, numStr string) {
 	})
 }
 
-func (s *schematic) validatePartNumbers() {
+func (s *schematic) validatePartNumbers() int {
+	validSum := 0
 	combinedSymbolLocations := s.symbolLocations
 	if s.prev != nil {
 		combinedSymbolLocations = append(combinedSymbolLocations, s.prev.symbolLocations...)
@@ -50,7 +42,11 @@ func (s *schematic) validatePartNumbers() {
 	}
 	for index, pn := range s.partNumbers {
 		s.partNumbers[index].valid = pn.isValid(combinedSymbolLocations)
+		if s.partNumbers[index].valid {
+			validSum += s.partNumbers[index].value
+		}
 	}
+	return validSum
 }
 
 func parseSchematic(line string) schematic {
@@ -75,6 +71,15 @@ func parseSchematic(line string) schematic {
 	return s
 }
 
+func (p *partNumber) isValid(symbolLocations []int) bool {
+	for _, loc := range symbolLocations {
+		if p.startLocation-1 <= loc && p.endLocation+1 >= loc {
+			return true
+		}
+	}
+	return false
+}
+
 func Part1() (string, error) {
 	sum := 0
 	var prevSchematic *schematic
@@ -87,17 +92,11 @@ func Part1() (string, error) {
 		if prevSchematic != nil {
 			prevSchematic.next = &s
 			s.prev = prevSchematic
-			prevSchematic.validatePartNumbers()
 		}
 		prevSchematic = &s
 	}
-	prevSchematic.validatePartNumbers()
 	for schem := firstSchematic; schem != nil; schem = schem.next {
-		for _, pn := range schem.partNumbers {
-			if pn.valid {
-				sum += pn.value
-			}
-		}
+		sum += schem.validatePartNumbers()
 	}
 	return fmt.Sprintf("%d", sum), nil
 }
