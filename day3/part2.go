@@ -9,7 +9,7 @@ import (
 func (s *schematic) getGearRatios() int {
 	ratioSum := 0
 	for _, gear := range s.symbolLocations {
-		var linkedParts []partNumber
+		var linkedParts []*partNumber
 		combinedPartNumbers := s.partNumbers
 		if s.prev != nil {
 			combinedPartNumbers = append(combinedPartNumbers, s.prev.partNumbers...)
@@ -17,9 +17,9 @@ func (s *schematic) getGearRatios() int {
 		if s.next != nil {
 			combinedPartNumbers = append(combinedPartNumbers, s.next.partNumbers...)
 		}
-		for _, pn := range combinedPartNumbers {
+		for pnIndex, pn := range combinedPartNumbers {
 			if pn.startLocation-1 <= gear && pn.endLocation+1 >= gear {
-				linkedParts = append(linkedParts, pn)
+				linkedParts = append(linkedParts, &combinedPartNumbers[pnIndex])
 			}
 		}
 		if linkedParts != nil && len(linkedParts) == 2 {
@@ -37,6 +37,7 @@ func parsePart2Schematic(line string) schematic {
 			numStr += string(char)
 			continue
 		}
+		// ignore non-* symbols
 		if char == '*' {
 			s.symbolLocations = append(s.symbolLocations, index)
 		}
