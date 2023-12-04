@@ -10,11 +10,13 @@ import (
 type card struct {
 	winningNumbers   map[string]bool
 	availableNumbers []string
+	copies           int
 }
 
 func newCard() card {
 	return card{
 		winningNumbers: make(map[string]bool),
+		copies:         1,
 	}
 }
 
@@ -33,7 +35,7 @@ func (c *card) getWinningCount() int {
 	winningCount := 0
 	for _, num := range c.availableNumbers {
 		if c.winningNumbers[num] {
-			winningCount += 1
+			winningCount++
 		}
 	}
 	return winningCount
