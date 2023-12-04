@@ -8,8 +8,7 @@ import (
 func getCardCount(cards []card) int {
 	sum := 0
 	for index, c := range cards {
-		winningCount := c.getWinningCount()
-		for i := winningCount; i > 0; i-- {
+		for i := c.getWinningCount(); i > 0; i-- {
 			cards[index+i].copies += c.copies
 		}
 		sum += c.copies

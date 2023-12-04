@@ -49,7 +49,7 @@ func Part1() (string, error) {
 		if winningCount == 0 {
 			continue
 		}
-		sum += int(math.Pow(2, float64(c.getWinningCount()-1)))
+		sum += int(math.Pow(2, float64(winningCount-1)))
 	}
 	return fmt.Sprintf("%d", sum), nil
 }
