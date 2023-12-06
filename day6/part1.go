@@ -12,13 +12,13 @@ type race struct {
 	recordDistance int
 }
 
-func (r *race) getWinningTimes() []int {
-	var winningTimes []int
+func (r *race) getWinningTimes() int {
+	var winningTimes int
 	for t := 1; t < r.time; t++ {
 		remainingTime := r.time - t
 		distance := t * remainingTime
 		if distance > r.recordDistance {
-			winningTimes = append(winningTimes, t)
+			winningTimes++
 		}
 	}
 	return winningTimes
@@ -52,9 +52,9 @@ func Part1() (string, error) {
 	for _, r := range races {
 		times := r.getWinningTimes()
 		if answer == 0 {
-			answer = len(times)
+			answer = times
 		} else {
-			answer *= len(times)
+			answer *= times
 		}
 	}
 	return fmt.Sprintf("%d", answer), nil

@@ -29,6 +29,6 @@ func parseFilePart2() race {
 func Part2() (string, error) {
 	answer := 0
 	r := parseFilePart2()
-	answer = len(r.getWinningTimes())
+	answer = r.getWinningTimes()
 	return fmt.Sprintf("%d", answer), nil
 }
