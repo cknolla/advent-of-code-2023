@@ -3,6 +3,8 @@ package day5
 import (
 	"advent-of-code-2023/utils"
 	"fmt"
+	"log"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -34,6 +36,18 @@ func (m *mapping) convertPart2(input *seedRange) ([]seedRange, bool) {
 			})
 		}
 		return outputRanges, true
+	} else if input.end >= m.source && input.end <= m.source+m.range_ {
+		// starts below mapping, but encroaches into it
+		mappingStart := m.source
+		outputRanges = append(outputRanges, seedRange{
+			start: input.start,
+			end:   mappingStart - 1,
+		})
+		outputRanges = append(outputRanges, seedRange{
+			start: m.destination + (mappingStart - m.source),
+			end:   m.destination + (input.end - m.source),
+		})
+		return outputRanges, true
 	}
 	// input not found in mapping
 	outputRanges = append(outputRanges, *input)
@@ -49,7 +63,7 @@ func processSeedsPart2(line string) []seedRange {
 		range_, _ := strconv.Atoi(seedStrs[i+1])
 		seedRanges[i/2] = seedRange{
 			start: start,
-			end:   start + range_,
+			end:   start + range_ - 1,
 		}
 	}
 	return seedRanges
@@ -59,15 +73,21 @@ func processMappingsPart2(mappings []mapping, inputs []seedRange) []seedRange {
 	var outputs []seedRange
 	var found bool
 	for i, input := range inputs {
-		for _, mapping := range mappings {
+		for _, mappin := range mappings {
 			var output []seedRange
-			// weakness: seed ranges can be broken into two parts after conversion, but
-			// the out-of-mapping range doesn't get rechecked against other mappings.
-			// Have to assume no seed ranges split across multiple mappings
-			output, found = mapping.convertPart2(&input)
+			output, found = mappin.convertPart2(&input)
 			if found {
-				for _, sr := range output {
-					outputs = append(outputs, sr)
+				outputs = append(outputs, output[0])
+				if len(output) == 2 {
+					log.Printf("range starting with %d went over\n", input.start)
+					extraOutput, extraFound := mappin.convertPart2(&output[1])
+					if len(extraOutput) == 2 {
+						log.Fatalln("NO!")
+					}
+					if extraFound {
+						log.Printf("found round 2!\n")
+					}
+					outputs = append(outputs, extraOutput[0])
 				}
 				break
 			}
@@ -80,7 +100,7 @@ func processMappingsPart2(mappings []mapping, inputs []seedRange) []seedRange {
 }
 
 func getMinLocation(seeds []seedRange) int {
-	minLoc := 999999999999999
+	minLoc := math.MaxInt
 	for _, seed := range seeds {
 		if seed.start < minLoc {
 			minLoc = seed.start
