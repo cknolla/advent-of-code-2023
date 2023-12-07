@@ -83,7 +83,8 @@ func Part1() (string, error) {
 		green: 13,
 		blue:  14,
 	}
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		g := parseGame(line)
 		if g.isPossible(&limit) {
 			sum += g.id

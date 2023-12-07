@@ -84,7 +84,8 @@ func Part1() (string, error) {
 	sum := 0
 	var prevSchematic *schematic
 	var firstSchematic *schematic
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		s := parseSchematic(line)
 		if firstSchematic == nil {
 			firstSchematic = &s

@@ -25,7 +25,8 @@ func getPart1CalibrationValue(inputLine string) int {
 // every Part function from every day.
 func Part1() (string, error) {
 	sum := 0
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		sum += getPart1CalibrationValue(line)
 	}
 	return fmt.Sprintf("%d", sum), nil

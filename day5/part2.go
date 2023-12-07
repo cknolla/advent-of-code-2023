@@ -112,7 +112,8 @@ func getMinLocation(seeds []seedRange) int {
 func parseFilePart2() int {
 	var seeds []seedRange
 	var mappings []mapping
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		if strings.HasPrefix(line, "seeds") {
 			seeds = processSeedsPart2(line)
 		} else if strings.Contains(line, "map") {

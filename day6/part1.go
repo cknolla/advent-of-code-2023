@@ -26,7 +26,8 @@ func (r *race) getWinningTimes() int {
 
 func parseFile() []race {
 	var races []race
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		parts := strings.Split(line, ":")
 		if parts[0] == "Time" {
 			fields := strings.Fields(parts[1])

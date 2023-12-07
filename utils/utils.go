@@ -5,11 +5,17 @@ import (
 	"os"
 )
 
+type Line struct {
+	Index int
+	Text  string
+}
+
 // GetInputLines returns 1 line at a time when looped over
-func GetInputLines() (channel chan string) {
-	channel = make(chan string, 1)
+func GetInputLines(filename string) (channel chan Line) {
+	channel = make(chan Line, 1)
+	currentLine := 0
 	go func() {
-		file, err := os.Open("input.txt")
+		file, err := os.Open(filename)
 		if err != nil {
 			close(channel)
 			return
@@ -18,7 +24,8 @@ func GetInputLines() (channel chan string) {
 		scanner := bufio.NewScanner(file)
 		for {
 			if scanner.Scan() {
-				channel <- scanner.Text()
+				channel <- Line{currentLine, scanner.Text()}
+				currentLine++
 			} else {
 				close(channel)
 				return

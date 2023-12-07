@@ -43,7 +43,8 @@ func (c *card) getWinningCount() int {
 
 func Part1() (string, error) {
 	sum := 0
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		c := parseLine(line)
 		winningCount := c.getWinningCount()
 		if winningCount == 0 {

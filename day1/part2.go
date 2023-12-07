@@ -46,7 +46,8 @@ LINE:
 
 func Part2() (string, error) {
 	sum := 0
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		sum += getPart2CalibrationValue(line)
 	}
 	return fmt.Sprintf("%d", sum), nil

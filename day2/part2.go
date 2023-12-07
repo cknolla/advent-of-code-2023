@@ -11,7 +11,8 @@ func (g *game) getPower() int {
 
 func Part2() (string, error) {
 	sum := 0
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		g := parseGame(line)
 		sum += g.getPower()
 	}

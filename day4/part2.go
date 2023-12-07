@@ -19,7 +19,8 @@ func getCardCount(cards []card) int {
 func Part2() (string, error) {
 	sum := 0
 	var cards []card
-	for line := range utils.GetInputLines() {
+	for l := range utils.GetInputLines("input.txt") {
+		line := l.Text
 		c := parseLine(line)
 		cards = append(cards, c)
 	}
