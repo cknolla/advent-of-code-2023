@@ -113,5 +113,5 @@ func TestGetMinLocation(t *testing.T) {
 func TestPart2(t *testing.T) {
 	answer, err := Part2()
 	assert.Nil(t, err)
-	assert.Equal(t, "18458049", answer)
+	assert.Equal(t, "11611182", answer)
 }

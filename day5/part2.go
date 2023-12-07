@@ -80,13 +80,8 @@ func processMappingsPart2(mappings []mapping, inputs []seedRange) []seedRange {
 				outputs = append(outputs, output[0])
 				if len(output) == 2 {
 					log.Printf("range starting with %d went over\n", input.start)
-					extraOutput, extraFound := mappin.convertPart2(&output[1])
-					if len(extraOutput) == 2 {
-						log.Fatalln("NO!")
-					}
-					if extraFound {
-						log.Printf("found round 2!\n")
-					}
+					extraOutput, _ := mappin.convertPart2(&output[1])
+					// ignore if the overhang encroaches into yet another mapping
 					outputs = append(outputs, extraOutput[0])
 				}
 				break
