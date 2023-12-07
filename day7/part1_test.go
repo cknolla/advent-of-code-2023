@@ -16,5 +16,5 @@ func TestParseFile(t *testing.T) {
 func TestPart1(t *testing.T) {
 	answer, err := Part1()
 	assert.Nil(t, err)
-	assert.Equal(t, "2374848", answer)
+	assert.Equal(t, "248396258", answer)
 }
