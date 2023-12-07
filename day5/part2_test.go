@@ -110,10 +110,6 @@ func TestGetMinLocation(t *testing.T) {
 	assert.Equal(t, 20, min)
 }
 
-func TestPart2Sample(t *testing.T) {
-
-}
-
 func TestPart2(t *testing.T) {
 	answer, err := Part2()
 	assert.Nil(t, err)

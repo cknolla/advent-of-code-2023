@@ -4,7 +4,6 @@ import (
 	"advent-of-code-2023/utils"
 	"fmt"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -38,7 +37,7 @@ func (h *hand) determineValuePart2() int {
 	if jokerCount == 5 {
 		return FIVE_OF_A_KIND
 	}
-	sort.Ints(cardCounts)
+	slices.Sort(cardCounts)
 	// adding jokers to the largest group is always the strongest
 	cardCounts[len(cardCounts)-1] += jokerCount
 	if slices.Equal(cardCounts, []int{5}) {
@@ -111,7 +110,7 @@ func parseFilePart2(filename string) []hand {
 func Part2() (string, error) {
 	answer := 0
 	hands := parseFilePart2("input.txt")
-	sort.Sort(byCards(hands))
+	slices.SortFunc(hands, handCmp)
 	for index, hand := range hands {
 		answer += hand.bid * (index + 1)
 	}

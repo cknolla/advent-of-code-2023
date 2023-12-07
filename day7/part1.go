@@ -4,7 +4,6 @@ import (
 	"advent-of-code-2023/utils"
 	"fmt"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -46,7 +45,7 @@ func (h *hand) determineValue() int {
 	for _, value := range cardCountMap {
 		cardCounts = append(cardCounts, value)
 	}
-	sort.Ints(cardCounts)
+	slices.Sort(cardCounts)
 	if slices.Equal(cardCounts, []int{5}) {
 		return FIVE_OF_A_KIND
 	}
@@ -68,21 +67,21 @@ func (h *hand) determineValue() int {
 	return HIGH_CARD
 }
 
-type byCards []hand
-
-func (b byCards) Len() int      { return len(b) }
-func (b byCards) Swap(i, j int) { b[i], b[j] = b[j], b[i] }
-
-// despite the result being Less, I prefer determining Greater, then inverting the return
-func (b byCards) Less(i, j int) bool {
-	if b[i].value == b[j].value {
-		for index, card := range b[i].cards {
-			if card != b[j].cards[index] {
-				return card < b[j].cards[index]
+func handCmp(a hand, b hand) int {
+	if a.value < b.value {
+		return -1
+	} else if a.value > b.value {
+		return 1
+	} else {
+		for index, card := range a.cards {
+			if card < b.cards[index] {
+				return -1
+			} else if card > b.cards[index] {
+				return 1
 			}
 		}
 	}
-	return b[i].value < b[j].value
+	return 0
 }
 
 func getCardValue(char rune) int {
@@ -134,7 +133,7 @@ func parseFile(filename string) []hand {
 func Part1() (string, error) {
 	answer := 0
 	hands := parseFile("input.txt")
-	sort.Sort(byCards(hands))
+	slices.SortFunc(hands, handCmp)
 	for index, hand := range hands {
 		answer += hand.bid * (index + 1)
 	}
