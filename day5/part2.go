@@ -3,7 +3,6 @@ package day5
 import (
 	"advent-of-code-2023/utils"
 	"fmt"
-	"log"
 	"math"
 	"strconv"
 	"strings"
@@ -79,7 +78,7 @@ func processMappingsPart2(mappings []mapping, inputs []seedRange) []seedRange {
 			if found {
 				outputs = append(outputs, output[0])
 				if len(output) == 2 {
-					log.Printf("range starting with %d went over\n", input.start)
+					//log.Printf("range starting with %d went over\n", input.start)
 					extraOutput, _ := mappin.convertPart2(&output[1])
 					// ignore if the overhang encroaches into yet another mapping
 					outputs = append(outputs, extraOutput[0])
