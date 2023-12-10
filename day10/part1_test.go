@@ -8,7 +8,7 @@ import (
 func TestParseFile(t *testing.T) {
 	maze := parseFile("sample.txt")
 	assert.Equal(t, location{2, 0}, maze.startingLoc)
-	assert.Equal(t, []rune{'.', 'F', 'J', '|', '7'}, maze.runes[1][0:5])
+	assert.Equal(t, []rune{'.', 'F', 'J', '|', '7'}, maze.pipes[1][0:5])
 }
 
 func TestPart1(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 )
 
 type maze struct {
-	runes       [][]rune
+	pipes       [][]pipe
 	startingLoc location
 	rowCount    int
 	colCount    int
@@ -16,6 +16,11 @@ type maze struct {
 type location struct {
 	y int
 	x int
+}
+
+type pipe struct {
+	rune   rune
+	inLoop bool
 }
 
 func (l *location) Add(direction *location) {
@@ -45,22 +50,25 @@ var directionMap = map[rune][]location{
 func (m *maze) traverse() (steps int) {
 	currentLoc := m.startingLoc
 	prevLoc := currentLoc
+	m.pipes[currentLoc.y][currentLoc.x].inLoop = true
 	// first order of business is finding out which way to go from start
-	if currentLoc.x != 0 && strings.ContainsRune("-LF", m.runes[currentLoc.y][currentLoc.x-1]) {
+	if currentLoc.x != 0 && strings.ContainsRune("-LF", m.pipes[currentLoc.y][currentLoc.x-1].rune) {
 		currentLoc.Add(&location{0, -1})
-	} else if currentLoc.y != 0 && strings.ContainsRune("|LJ", m.runes[currentLoc.y-1][currentLoc.x]) {
+	} else if currentLoc.y != 0 && strings.ContainsRune("|LJ", m.pipes[currentLoc.y-1][currentLoc.x].rune) {
 		currentLoc.Add(&location{-1, 0})
-	} else if currentLoc.x != m.rowCount-1 && strings.ContainsRune("-7J", m.runes[currentLoc.y][currentLoc.x+1]) {
+	} else if currentLoc.x != m.rowCount-1 && strings.ContainsRune("-7J", m.pipes[currentLoc.y][currentLoc.x+1].rune) {
 		currentLoc.Add(&location{0, 1})
 	} else {
 		currentLoc.Add(&location{1, 0})
 	}
+	m.pipes[currentLoc.y][currentLoc.x].inLoop = true
 	steps++
 	// then continue finding other neighbor until encountering starting pos again
-	for m.runes[currentLoc.y][currentLoc.x] != 'S' {
-		nextLoc := currentLoc.nextNeighbor(m.runes[currentLoc.y][currentLoc.x], &prevLoc)
+	for m.pipes[currentLoc.y][currentLoc.x].rune != 'S' {
+		nextLoc := currentLoc.nextNeighbor(m.pipes[currentLoc.y][currentLoc.x].rune, &prevLoc)
 		prevLoc = currentLoc
 		currentLoc = nextLoc
+		m.pipes[currentLoc.y][currentLoc.x].inLoop = true
 		steps++
 	}
 	return steps
@@ -68,9 +76,9 @@ func (m *maze) traverse() (steps int) {
 
 func parseFile(filename string) maze {
 	var m maze
-	m.runes = make([][]rune, 140)
-	for i := range m.runes {
-		m.runes[i] = make([]rune, 140)
+	m.pipes = make([][]pipe, 140)
+	for i := range m.pipes {
+		m.pipes[i] = make([]pipe, 140)
 	}
 	for l := range utils.GetInputLines(filename) {
 		line := l.Text
@@ -78,7 +86,7 @@ func parseFile(filename string) maze {
 			continue
 		}
 		for x, r := range l.Text {
-			m.runes[l.Index][x] = r
+			m.pipes[l.Index][x].rune = r
 			if r == 'S' {
 				m.startingLoc = location{l.Index, x}
 			}
