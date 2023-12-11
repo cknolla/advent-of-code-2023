@@ -13,6 +13,8 @@ func (m *maze) getInsideCount() int {
 			if !pipe.inLoop && inside {
 				insideCount++
 			} else if pipe.inLoop && strings.ContainsRune("|LJ", pipe.rune) {
+				// any upward traversal
+				// S happens to be a '-' in my input, so no need to swap it
 				inside = !inside
 			}
 		}
