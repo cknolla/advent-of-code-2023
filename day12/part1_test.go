@@ -35,6 +35,9 @@ func TestTestAll(t *testing.T) {
 		sum += validArrangements
 	}
 	assert.Equal(t, 21, sum)
+	r := row{[]rune("?###??????????###????????"), []int{3, 2, 1, 3, 2, 1}}
+	arrangements := r.testAll()
+	assert.Equal(t, 150, arrangements)
 }
 
 func TestPart1(t *testing.T) {
