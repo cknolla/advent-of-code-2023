@@ -1,6 +1,9 @@
 package day14
 
-import "advent-of-code-2023/utils"
+import (
+	"advent-of-code-2023/utils"
+	"fmt"
+)
 
 const (
 	SPACE = iota
@@ -15,15 +18,10 @@ const (
 	WEST
 )
 
-//type location struct {
-//	occupant int
-//
-//}
-
 func tilt(locations [][]int, direction int) [][]int {
-	for rowIndex := 0; rowIndex < len(locations); rowIndex++ {
-		switch direction {
-		case NORTH:
+	switch direction {
+	case NORTH:
+		for rowIndex := 0; rowIndex < len(locations); rowIndex++ {
 			for colIndex := 0; colIndex < len(locations[rowIndex]); colIndex++ {
 				if locations[rowIndex][colIndex] != ROUND_ROCK {
 					continue
@@ -32,6 +30,54 @@ func tilt(locations [][]int, direction int) [][]int {
 					if locations[index-1][colIndex] == SPACE {
 						locations[index-1][colIndex] = ROUND_ROCK
 						locations[index][colIndex] = SPACE
+					} else {
+						break
+					}
+				}
+			}
+		}
+	case EAST:
+		for rowIndex := 0; rowIndex < len(locations); rowIndex++ {
+			for colIndex := len(locations[rowIndex]) - 2; colIndex >= 0; colIndex-- {
+				if locations[rowIndex][colIndex] != ROUND_ROCK {
+					continue
+				}
+				for index := colIndex; index < len(locations[rowIndex])-1; index++ {
+					if locations[rowIndex][index+1] == SPACE {
+						locations[rowIndex][index+1] = ROUND_ROCK
+						locations[rowIndex][index] = SPACE
+					} else {
+						break
+					}
+				}
+			}
+		}
+	case SOUTH:
+		for rowIndex := len(locations) - 1; rowIndex >= 0; rowIndex-- {
+			for colIndex := 0; colIndex < len(locations[rowIndex]); colIndex++ {
+				if locations[rowIndex][colIndex] != ROUND_ROCK {
+					continue
+				}
+				for index := rowIndex; index < len(locations)-1; index++ {
+					if locations[index+1][colIndex] == SPACE {
+						locations[index+1][colIndex] = ROUND_ROCK
+						locations[index][colIndex] = SPACE
+					} else {
+						break
+					}
+				}
+			}
+		}
+	case WEST:
+		for rowIndex := 0; rowIndex < len(locations); rowIndex++ {
+			for colIndex := 1; colIndex < len(locations[rowIndex]); colIndex++ {
+				if locations[rowIndex][colIndex] != ROUND_ROCK {
+					continue
+				}
+				for index := colIndex; index > 0; index-- {
+					if locations[rowIndex][index-1] == SPACE {
+						locations[rowIndex][index-1] = ROUND_ROCK
+						locations[rowIndex][index] = SPACE
 					} else {
 						break
 					}
@@ -74,6 +120,22 @@ func parseFile(filename string) [][]int {
 		locations = append(locations, row)
 	}
 	return locations
+}
+
+func printDish(locations *[][]int) {
+	for _, location := range *locations {
+		for _, object := range location {
+			char := "."
+			switch object {
+			case ROUND_ROCK:
+				char = "O"
+			case CUBE_ROCK:
+				char = "#"
+			}
+			fmt.Printf("%s", char)
+		}
+		fmt.Println("")
+	}
 }
 
 func Part1(filename string) int {
