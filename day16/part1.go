@@ -14,9 +14,6 @@ const (
 var LastCol int
 var LastRow int
 
-type Beam struct {
-}
-
 type Object struct {
 	Char          rune
 	Loc           Location
