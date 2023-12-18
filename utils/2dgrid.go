@@ -66,33 +66,33 @@ func BuildMatrixFunc[T any](lines []string, convert func(c int32) T) Matrix[T] {
 	return m
 }
 
-func (m Matrix[any]) LenY() int {
+func (m Matrix[T]) LenY() int {
 	if len(m) == 0 {
 		return 0
 	}
 	return len(m)
 }
 
-func (m Matrix[any]) LenX() int {
+func (m Matrix[T]) LenX() int {
 	if len(m) == 0 {
 		return 0
 	}
 	return len(m[0])
 }
 
-func (m Matrix[any]) MaxY() int {
+func (m Matrix[T]) MaxY() int {
 	return m.LenY() - 1
 }
 
-func (m Matrix[any]) MaxX() int {
+func (m Matrix[T]) MaxX() int {
 	return m.LenX() - 1
 }
 
-func (m Matrix[any]) IsValidPos(pos Pos) bool {
+func (m Matrix[T]) IsValidPos(pos Pos) bool {
 	return pos.Y >= 0 && pos.Y < len(m) && pos.X >= 0 && pos.X < len(m[pos.Y])
 }
 
-func (m Matrix[any]) RotateLeft() Matrix[any] {
+func (m Matrix[T]) RotateLeft() Matrix[any] {
 	var m2 = make([][]any, len(m[0]))
 	for i := range m2 {
 		m2[i] = make([]any, len(m))
@@ -105,7 +105,7 @@ func (m Matrix[any]) RotateLeft() Matrix[any] {
 	return m2
 }
 
-func (m Matrix[any]) RotateRight() Matrix[any] {
+func (m Matrix[T]) RotateRight() Matrix[any] {
 	var m2 = make([][]any, len(m[0]))
 	for i := range m2 {
 		m2[i] = make([]any, len(m))
@@ -118,7 +118,7 @@ func (m Matrix[any]) RotateRight() Matrix[any] {
 	return m2
 }
 
-func (m Matrix[any]) Transpose() Matrix[any] {
+func (m Matrix[T]) Transpose() Matrix[any] {
 	var m2 = make([][]any, len(m[0]))
 	for i := range m2 {
 		m2[i] = make([]any, len(m))
@@ -131,7 +131,7 @@ func (m Matrix[any]) Transpose() Matrix[any] {
 	return m2
 }
 
-func (m Matrix[any]) String() string {
+func (m Matrix[T]) String() string {
 	var sb strings.Builder
 	for i, l := range m {
 		for _, c := range l {
