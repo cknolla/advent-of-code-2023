@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"os"
+	"strconv"
 )
 
 type Line struct {
@@ -34,4 +35,9 @@ func GetInputLines(filename string) (channel chan Line) {
 
 	}()
 	return channel
+}
+
+func ToInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
 }
