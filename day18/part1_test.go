@@ -20,5 +20,5 @@ func TestPart1Sample(t *testing.T) {
 
 func TestPart1(t *testing.T) {
 	answer := Part1("input.txt")
-	assert.Equal(t, 7608, answer)
+	assert.Equal(t, 50603, answer)
 }
